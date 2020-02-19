@@ -32,3 +32,19 @@ from ev3dev2.power import *
 from ev3dev2.sensor import *
 from ev3dev2.sensor.lego import TouchSensor
 from ev3dev2.sound import *
+
+btn = BUtton()
+
+while True:
+    if (btn.any):
+        print('Fui pressinado!', file=stderr)
+        if (btn.button_pressed() == 'up'):
+            print('Para CIMA!', file-strderr)
+        elif (btn.button_pressed() == 'down'):
+            print('Para BAIXO!', file-strderr)
+        elif (btn.button_pressed() == 'enter'):
+            print('ENTER!', file-strderr)
+        elif (btn.button_pressed() == 'left'):
+            print('Para ESQUERDA!!', file-strderr)
+        elif (btn.button_pressed() == 'right'):
+            print('Para DIREITA!!', file-strderr)
