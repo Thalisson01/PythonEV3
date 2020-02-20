@@ -1,16 +1,7 @@
 #!/usr/bin/env python3
 
-"""
-from pybricks import ev3brick as brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
-                                 InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import (Port, Stop, Direction, Button, Color,
-                                 SoundFile, ImageFile, Align)
-from pybricks.tools import print, wait, StopWatch
-from pybricks.robotics import DriveBase
-"""
-
 from ev3dev2 import *
+from sys import stderr
 
 platform = get_current_platform()
 
@@ -22,29 +13,81 @@ else:
     raise Exception("Unsupported platform '%s'" % platform)
 
 from ev3dev2.button import Button
-from ev3dev2.console import *
-from ev3dev2.display import *
-from ev3dev2.fonts import *
 from ev3dev2.led import Leds
 from ev3dev2.motor import LargeMotor, SpeedPercent, MoveTank # OutPut
-from ev3dev2.port import *
-from ev3dev2.power import *
-from ev3dev2.sensor import *
-from ev3dev2.sensor.lego import TouchSensor
-from ev3dev2.sound import *
+from ev3dev2.sensor.lego import TouchSensor, ColorSensor # Input
+from time import sleep
 
-btn = BUtton()
 
+btn = Button()
+s1 = ColorSensor(INPUT_1)
+s2 = ColorSensor(INPUT_4)
+
+s1.mode = 'RGB-RAW'
+s2.mode = 'RGB-RAW'
+
+preto = list()
+verde = list()
+cinza = list()
+
+print('Me aperta.', file=stderr)
 while True:
-    if (btn.any):
-        print('Fui pressinado!', file=stderr)
-        if (btn.button_pressed() == 'up'):
-            print('Para CIMA!', file-strderr)
-        elif (btn.button_pressed() == 'down'):
-            print('Para BAIXO!', file-strderr)
-        elif (btn.button_pressed() == 'enter'):
-            print('ENTER!', file-strderr)
-        elif (btn.button_pressed() == 'left'):
-            print('Para ESQUERDA!!', file-strderr)
-        elif (btn.button_pressed() == 'right'):
-            print('Para DIREITA!!', file-strderr)
+    if (btn.any()):
+        sleep(0.1)
+        # Apertar para cima
+        if (btn.buttons_pressed[0] == 'up'):
+            print('Para cima.', file=stderr)
+            #Segue linha
+            while True:
+                print('.', file=stderr)
+                # Verificar se apertou algo
+                if (btn.any()):
+                    # Apertar enter = parar
+                    if (btn.buttons_pressed[0] == 'enter'):
+                        print('Pausei!', file=stderr)
+                        # Aguardar apertar para baixo, para continuar
+                        btn.wait_for_pressed('down')
+                        print('Fdppp!', file=stderr)
+
+        elif (btn.buttons_pressed[0] == 'down'):
+            print('Para baixo!', file=stderr)
+
+            # Preto Esquerdo
+            print('Preto - ESQUERDO!', file=stderr)
+            btn.wait_for_pressed('left')
+            RGB1[1] = preto[0]
+            # Preto Direito
+            print('Preto - DIREITO!', file=stderr)
+            btn.wait_for_pressed('right')
+            RGB2[1] = preto[1]
+
+            # Verde Esquerdo
+            print('Verde - ESQUERDO!', file=stderr)
+            btn.wait_for_pressed('left')
+            RGB1[1] = verde[0]
+            # Verde Direito
+            print('Verde - DIREITO!', file=stderr)
+            btn.wait_for_pressed('right')
+            RGB2[1] = preto[1]
+
+            # Verde Esquerdo
+            print('Cinza - ESQUERDO!', file=stderr)
+            btn.wait_for_pressed('left')
+            RGB1[1] = verde[0]
+            # Verde Direito
+            print('Cinza - DIREITO!', file=stderr)
+            btn.wait_for_pressed('right')
+            RGB2[1] = preto[1]
+
+        elif (btn.buttons_pressed[0] == 'left'):
+            print('Para esquerda!', file=stderr)
+            
+            while True:
+                RGB1 = [s1.value(0), s1.value(1), s1.value(2)]
+                RGB2 = [s2.value(0), s2.value(1), s2.value(2)]
+                print('1 - R', RGB1[0], 'G', RGB1[1], 'B', RGB1[2], file=stderr)
+                print('2 - R', RGB2[0], 'G', RGB2[1], 'B', RGB2[2], file=stderr)
+                sleep(1)
+                
+        elif (btn.buttons_pressed[0] == 'right'):
+            print('Para DIREITA!!', file=strderr)
