@@ -26,9 +26,9 @@ s2 = ColorSensor(INPUT_4)
 s1.mode = 'RGB-RAW'
 s2.mode = 'RGB-RAW'
 
-preto = list()
-verde = list()
-cinza = list()
+preto = [0, 0]
+verde = [0, 0]
+cinza = [0, 0]
 
 print('Me aperta.', file=stderr)
 while True:
@@ -39,7 +39,13 @@ while True:
             print('Para cima.', file=stderr)
             #Segue linha
             while True:
-                print('.', file=stderr)
+                """
+                while not (btn.any()):
+                    if (btn.buttons_pressed[0] == 'left'):
+                        # Segue linha com config
+                    elif (btn.buttons_pressed[0] == 'right'):
+                        # Segue linha sem config - pré configurado
+                """
                 # Verificar se apertou algo
                 if (btn.any()):
                     # Apertar enter = parar
@@ -47,7 +53,7 @@ while True:
                         print('Pausei!', file=stderr)
                         # Aguardar apertar para baixo, para continuar
                         btn.wait_for_pressed('down')
-                        print('Fdppp!', file=stderr)
+                        print('Voltei a funcionar!', file=stderr)
 
         elif (btn.buttons_pressed[0] == 'down'):
             print('Para baixo!', file=stderr)
@@ -55,29 +61,29 @@ while True:
             # Preto Esquerdo
             print('Preto - ESQUERDO!', file=stderr)
             btn.wait_for_pressed('left')
-            RGB1[1] = preto[0]
+            preto[0] = RGB1[1]
             # Preto Direito
             print('Preto - DIREITO!', file=stderr)
             btn.wait_for_pressed('right')
-            RGB2[1] = preto[1]
+            preto[1] = RGB2[1]
 
             # Verde Esquerdo
             print('Verde - ESQUERDO!', file=stderr)
             btn.wait_for_pressed('left')
-            RGB1[1] = verde[0]
+            verde[0] = RGB1[1]
             # Verde Direito
             print('Verde - DIREITO!', file=stderr)
             btn.wait_for_pressed('right')
-            RGB2[1] = preto[1]
+            preto[1] = RGB2[1]
 
             # Verde Esquerdo
             print('Cinza - ESQUERDO!', file=stderr)
             btn.wait_for_pressed('left')
-            RGB1[1] = verde[0]
+            verde[0] = RGB1[1]
             # Verde Direito
             print('Cinza - DIREITO!', file=stderr)
             btn.wait_for_pressed('right')
-            RGB2[1] = preto[1]
+            preto[1] = RGB2[1]
 
         elif (btn.buttons_pressed[0] == 'left'):
             print('Para esquerda!', file=stderr)
@@ -88,6 +94,16 @@ while True:
                 print('1 - R', RGB1[0], 'G', RGB1[1], 'B', RGB1[2], file=stderr)
                 print('2 - R', RGB2[0], 'G', RGB2[1], 'B', RGB2[2], file=stderr)
                 sleep(1)
+                # Verificar se algo foi apertado
+                if (btn.any()):
+                    # Apertar enter = parar
+                    if (btn.buttons_pressed[0] == 'enter'):
+                        print('Pausei!', file=stderr)
+                        print('Pressione para baixo para voltar o programa!', file=stderr)
+                        # Aguardar apertar para baixo, para continuar
+                        btn.wait_for_pressed('down')
+                        break
+
                 
         elif (btn.buttons_pressed[0] == 'right'):
             print('Para DIREITA!!', file=strderr)
